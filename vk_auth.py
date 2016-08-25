@@ -1,12 +1,19 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from http.cookiejar import CookieJar
-import urllib.request, urllib.error, urllib.parse
-import urllib.request, urllib.parse, urllib.error
-from urllib.parse import urlparse
+import urllib.error
+import urllib.error
+import urllib.parse
+import urllib.parse
+import urllib.request
+import urllib.request
 from html.parser import HTMLParser
+from http.cookiejar import CookieJar
+from urllib.parse import urlparse
 
+"""
+    this scrip was stolen from there https://github.com/dzhioev/vk_api_auth
+"""
 
 class FormParser(HTMLParser):
     def __init__(self):
