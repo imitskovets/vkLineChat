@@ -6,15 +6,18 @@ from colorama import Fore, Style
 def unknown_input():
     unknowinput = 'Unknown input, fuck yourself ...'
     print(Style.BRIGHT + Fore.RED + unknowinput + Style.RESET_ALL)
+    return 0
 
 
 def incorrect_input(userinput):
     incorrectinput = 'Could not understand '
     print(Style.BRIGHT + Fore.RED + incorrectinput + '\'' + userinput + '\'' + ' please try again.' + Style.RESET_ALL)
+    return 0
 
 
 def ok():
     print(Style.DIM + Fore.GREEN + 'OK!' + Style.RESET_ALL)
+    return 0
 
 
 def color_tests():
@@ -70,3 +73,4 @@ def color_tests():
     print(Fore.WHITE + 'white')
     print(Fore.LIGHTWHITE_EX + 'li_white')
     print(Style.RESET_ALL)
+    return 0

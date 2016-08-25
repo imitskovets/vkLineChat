@@ -28,6 +28,7 @@ def mark_message_as_read_verb(api, last_id, user_id):
     target_read_mes_id = \
         api.messages.getHistory(count=1, user_id=user_id, offset=leave_mess, start_message_id=last_id)['items'][0]['id']
     api.messages.markAsRead(message_ids=target_read_mes_id)
+    return 0
 
 
 def send_message(api, to_user_id, to_user_name, my_name):
@@ -35,7 +36,6 @@ def send_message(api, to_user_id, to_user_name, my_name):
     response = api.messages.send(user_id=to_user_id, message=send_message_body)
     message = dict(out=1, body=send_message_body, read_state=0, date=int(api.utils.getServerTime()))
     echo_mess.one_mess_simple_view(message, to_user_name, my_name)
-
     return response
 
 
