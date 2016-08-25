@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import vk
+import getpass
+
 from colorama import Fore
 from colorama import Style
 
 import notification
 import vk_auth
-import getpass
 
 # our application identification
 appid = '5589908'
@@ -48,10 +48,10 @@ def old_session():
 def new_old_session_menu():
     answer = input('Try to continue old session? [y/n] : ')
     auth_content = []
-    if answer == 'y' or answer == 'n':
-        if answer == 'y':
+    if answer == 'y' or answer == 'n' or answer == 'н' or answer == 'т':
+        if answer == 'y' or answer == 'н':
             auth_content = old_session()
-        if answer == 'n':
+        if answer == 'n' or answer == 'т':
             auth_content = new_session()
     else:
         notification.unknown_input()

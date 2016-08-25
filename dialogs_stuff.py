@@ -5,7 +5,6 @@ import time
 
 import echo_mess
 import notification
-from colorama import Fore, Back, Style
 
 
 def dialog_chooser(max_dialog_number):
@@ -30,42 +29,50 @@ def send_message(api, to_user_id, to_user_name):
     return response
 
 
-def show_dialog_with_user(dialog_need_to_show, api, user_name, my_name):
-    history = api.messages.getHistory(rev=1, user_id=dialog_need_to_show['user_id'])
-    '''start_message_id=start_id,'''
-    for i in range(history['count']):
-        echo_mess.one_mess_simple_view(history['items'][i], user_name, my_name)
+def show_dialog_with_user(dialog_need_to_show, api, my_name):
+    # the count of messages shown above the read one
+    # TODO move add_mess in config
+    add_mes = 5
+    count = dialog_need_to_show['last_id'] - dialog_need_to_show['in_read'] + add_mes
+    history = api.messages.getHistory(count=count, user_id=dialog_need_to_show['user_id'])
+    for i in range(count-1, -1, -1):
+        echo_mess.one_mess_simple_view(history['items'][i], dialog_need_to_show['user_name'], my_name)
     return 0
 
 
 def show_unread_dialogs(api, my_name):
     dialogs = api.messages.getDialogs(unread=1)
-    dialogs_count = dialogs['count']
     print('')
-    print('You have ' + str(dialogs_count) + ' unread dialogs from')
-    for i in range(dialogs_count):
-        user_id = dialogs['items'][i]['message']['user_id']
-        user = api.users.get(user_ids=user_id)[0]
-        user_name = user['first_name'] + ' \t' + user['last_name']
+    if dialogs['count'] == 0:
+        print('You have no new messages :( .')
+        print('You have no friends, you useless.. Try to kill youself, maybe it will make the world better')
+        return 0
+    print('You have ' + str(dialogs['count']) + ' unread dialogs from')
+    for i in range(dialogs['count']):
+        user = api.users.get(user_ids=dialogs['items'][i]['message']['user_id'])[0]
         dialogs['items'][i]['message']['first_name'] = user['first_name']
         dialogs['items'][i]['message']['last_name'] = user['last_name']
-        dialogs['items'][i]['message']['user_name'] = user_name
-        print(str(i) + '. ' + str(dialogs['items'][i]['unread']) + '\t' + user_name + '\t\t\t' +
+        dialogs['items'][i]['message']['user_name'] = user['first_name'] + ' \t' + user['last_name']
+        print(str(i) + '. ' + str(dialogs['items'][i]['unread']) + '\t' + user['first_name'] + ' \t' +
+              user['last_name'] + '\t\t\t' +
               time.strftime("%H:%M:%S %d.%m.%y", time.gmtime(dialogs['items'][i]['message']['date'])))
     answer = input('Do you want to see any of this dialogs? [y/n]: ')
-    if answer == 'y' or answer == 'n':
-        if answer == 'y':
-            chosen_dialog = {'number': dialog_chooser(dialogs_count)}
+    if answer == 'y' or answer == 'n' or answer == 'т' or answer == 'н':
+        if answer == 'y' or answer == 'н':
+            chosen_dialog = {'number': dialog_chooser(dialogs['count'])}
             if chosen_dialog['number'] != -1:
-                # print('you choose dialog number: ' + str(chosen_dialog['number']))
                 chosen_dialog['user_id'] = dialogs['items'][chosen_dialog['number']]['message']['user_id']
                 chosen_dialog['unread_count'] = dialogs['items'][chosen_dialog['number']]['unread']
                 chosen_dialog['out_read_id'] = dialogs['items'][chosen_dialog['number']]['out_read']
-                chosen_dialog['in_read_id'] = dialogs['items'][chosen_dialog['number']]['in_read']
+                chosen_dialog['in_read'] = dialogs['items'][chosen_dialog['number']]['in_read']
                 user = api.users.get(user_ids=str(chosen_dialog['user_id']))
-                user_name = user[0]['first_name'] + ' \t' + user[0]['last_name']
-                show_dialog_with_user(chosen_dialog, api, user_name, my_name)
-                if 'y' == input('Do you want to answer?[y/n]'):
+                chosen_dialog['user_name'] = user[0]['first_name'] + ' \t' + user[0]['last_name']
+                chosen_dialog['user_last_name'] = user[0]['last_name']
+                chosen_dialog['user_first_name'] = user[0]['first_name']
+                chosen_dialog['last_id'] = dialogs['items'][chosen_dialog['number']]['message']['id']
+                show_dialog_with_user(chosen_dialog, api, my_name)
+                answer = input('Do you want to answer?[y/n]')
+                if answer == 'y' or answer == 'н':
                     send_message(api, chosen_dialog['user_id'], "a nu i hui s nim")
                 return chosen_dialog['user_id']
             else:

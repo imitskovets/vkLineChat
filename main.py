@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import vk
+from colorama import Fore, Style
+from colorama import init
+
 import dialogs_stuff
 import notification
 import token_stuff
-from colorama import init
-from colorama import Fore, Back, Style
 
 init()
 appid = '5589908'
@@ -21,7 +22,7 @@ print(Style.DIM + Fore.LIGHTGREEN_EX + 'So, now we are ready to chat!' + Style.R
 chosen_user_id = dialogs_stuff.show_unread_dialogs(api, my_name)
 
 
-
+notification.color_tests()
 
 '''
 received_mess = api.messages.get(count=recMesCount, out=0, time_offset=0)
