@@ -6,7 +6,6 @@ from colorama import Fore, Style
 from colorama import init
 
 import dialogs_stuff
-import notification
 import token_stuff
 
 init()
@@ -22,10 +21,6 @@ print(Style.DIM + Fore.LIGHTGREEN_EX + 'So, now we are ready to chat!' + Style.R
 chosen_user_id = dialogs_stuff.show_unread_dialogs(api, my_name)
 
 
-notification.color_tests()
+#notification.color_tests()
 
-'''
-received_mess = api.messages.get(count=recMesCount, out=0, time_offset=0)
-print(api.messages.markAsRead(message_ids=(received_mess['items'][0]['id'])))
-'''
 print('Bye... Bye...')

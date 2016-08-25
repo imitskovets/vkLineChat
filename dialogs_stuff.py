@@ -23,6 +23,13 @@ def dialog_chooser(max_dialog_number):
         return dialog_chooser(max_dialog_number)
 
 
+def mark_message_as_read_verb(api, last_id, user_id):
+    leave_mess = input('How many messages do want to leave unread? : ')
+    target_read_mes_id = \
+        api.messages.getHistory(count=1, user_id=user_id, offset=leave_mess, start_message_id=last_id)['items'][0]['id']
+    api.messages.markAsRead(message_ids=target_read_mes_id)
+
+
 def send_message(api, to_user_id, to_user_name, my_name):
     send_message_body = input('Message body(to \"' + to_user_name + '\"):\n')
     response = api.messages.send(user_id=to_user_id, message=send_message_body)
@@ -77,13 +84,12 @@ def show_unread_dialogs(api, my_name):
                 answer = input('Do you want to answer?[y/n] ')
                 if answer == 'y' or answer == 'n' or answer == 'т' or answer == 'н':
                     if answer == 'y' or answer == 'н':
-                        send_message(api, chosen_dialog['user_id'], chosen_dialog['user_name'],my_name)
+                        send_message(api, chosen_dialog['user_id'], chosen_dialog['user_name'], my_name)
                     if answer == 'n' or answer == 'т':
                         answer = input('Do you want to mark messages as read?[y/n] ')
                         if answer == 'y' or answer == 'n' or answer == 'т' or answer == 'н':
                             if answer == 'y' or answer == 'н':
-                                answer = input('How many messages do want to leave unread? : ')
-                                print('mark mess')
+                                mark_message_as_read_verb(api, chosen_dialog['last_id'], chosen_dialog['user_id'])
                             else:
                                 notification.unknown_input()
                 else:
