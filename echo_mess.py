@@ -10,6 +10,7 @@ def one_mess_simple_view(message, user_name, my_name):
     #TODO move utc_diff to config
     utc_diff = 3
     out_pre = '\t'
+    print(message['date'])
     if message['out'] == 1:
         out_pre += '\t'
         name = my_name

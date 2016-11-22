@@ -42,9 +42,10 @@ def send_message(api, to_user_id, to_user_name, my_name):
 def show_dialog_with_user(dialog_need_to_show, api, my_name):
     # the count of messages shown above the read one
     # TODO move add_mess in config
-    add_mes = 5
+    add_mes = 7
     count = dialog_need_to_show['last_id'] - dialog_need_to_show['in_read'] + add_mes
     history = api.messages.getHistory(count=count, user_id=dialog_need_to_show['user_id'])
+    # TODO take count  from history (for short dialogs)
     for i in range(count - 1, -1, -1):
         echo_mess.one_mess_simple_view(history['items'][i], dialog_need_to_show['user_name'], my_name)
     return 0

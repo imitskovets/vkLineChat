@@ -9,7 +9,8 @@ import dialogs_stuff
 import token_stuff
 
 init()
-appid = '5589908'
+#appid = '5589908'
+appid = 2274003
 auth_content = token_stuff.new_old_session_menu()
 accesstoken = auth_content[0]
 myid = auth_content[1]
